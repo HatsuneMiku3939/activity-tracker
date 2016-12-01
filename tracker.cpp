@@ -33,7 +33,7 @@ public:
 
   void emit(std::wstring log_json) {
     std::wstring_convert<std::codecvt_utf8<wchar_t>> utf8_conv;
-    send(utf8_conv.to_bytes(log_json));
+    send(utf8_conv.to_bytes(log_json + L"\n"));
   }
 
 private:
@@ -82,7 +82,7 @@ public:
            + L",\"user\":\"" + username + L"\""
            + L",\"window_text\":\"" + windowText + L"\""
            + L",\"filename\":\"" + filename
-           + L"\"}\n";
+           + L"\"}";
   }
 
 private:
@@ -94,15 +94,14 @@ private:
 
 class InternalLog : public Log {
 public:
-  InternalLog(std::wstring lev, std::wstring msg): Log(L"log"), level(lev), message(msg) {
-  }
+  InternalLog(std::wstring lev, std::wstring msg): Log(L"log"), level(lev), message(msg) { }
 
   std::wstring to_json(void) {
     return std::wstring(L"{")
            + L" \"timestamp\":\"" + current_time_and_date()
            + L",\"level\":\"" + level
            + L",\"message\":\"" + message
-           + L"\"}\n";
+           + L"\"}";
   }
 
 private:
@@ -119,6 +118,31 @@ private:
   std::wstring message;
 };
 
+class CounterFilter : public Filter {
+public:
+  CounterFilter(int cnt = 60) : max_count(cnt), count(0) { }
+
+  bool apply(Log *log) {
+    count += 1;
+
+    if (count >= max_count) {
+      count = 0;
+      return true;
+    }
+
+    return false;
+  }
+
+  void set_max(int cnt) {
+    count = 0;
+    max_count = cnt;
+  }
+
+private:
+  int count;
+  int max_count;
+};
+
 int main(void) {
   Logger logger;
 
@@ -126,10 +150,12 @@ int main(void) {
   logger.route(L"activity", &fluentd_udp_output);
 
   ConslogOutput consolg_output;
+  CounterFilter counter_filter(0);
+  consolg_output.withFilter(&counter_filter);
   logger.route(L"log", &consolg_output);
-  int counter = 0;
 
   logger.send(InternalLog(L"INFO", L"starting activity-tracker"));
+  counter_filter.set_max(60);
   while(true) {
     HWND activeWindow = GetForegroundWindow();
     DWORD activePID;
@@ -141,12 +167,8 @@ int main(void) {
     std::wstring status = isIdle() ? L"idle" : L"active";
 
     logger.send(ActivityLog(status, activeUsername, activeWindowText, activeFilename));
-    if (counter == 60) {
-      logger.send(InternalLog(L"INFO", L"activity-tracker is running..."));
-      counter = 0;
-    }
+    logger.send(InternalLog(L"INFO", L"activity-tracker is running..."));
 
-    counter++;
     Sleep(1000);
   }
 }
