@@ -98,8 +98,8 @@ public:
 
   std::wstring to_json(void) {
     return std::wstring(L"{")
-           + L" \"timestamp\":\"" + current_time_and_date()
-           + L",\"level\":\"" + level
+           + L" \"timestamp\":\"" + current_time_and_date() + L"\""
+           + L",\"level\":\"" + level + L"\""
            + L",\"message\":\"" + message
            + L"\"}";
   }
