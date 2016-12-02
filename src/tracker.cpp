@@ -70,12 +70,12 @@ private:
 class ActivityLog : public Log {
 public:
   ActivityLog(std::wstring &stat,
-    std::wstring &activeUsername,
-    std::wstring &activeWindowText,
-    std::wstring &activeFilename,
-    int actionPerSecond) : status(stat), username(activeUsername),
-                           windowText(activeWindowText), filename(activeFilename),
-                           aps(actionPerSecond), Log(L"activity") {
+              std::wstring &activeUsername,
+              std::wstring &activeWindowText,
+              std::wstring &activeFilename,
+              int actionPerSecond) : status(stat), username(activeUsername),
+    windowText(activeWindowText), filename(activeFilename),
+    aps(actionPerSecond), Log(L"activity") {
   }
 
   std::wstring to_json(void) {
@@ -167,7 +167,7 @@ int main(void) {
   ActionPerSecondMeter aps;
   aps.start();
 
-  while(true) {
+  while (true) {
     HWND activeWindow = GetForegroundWindow();
     DWORD activePID;
     GetWindowThreadProcessId(activeWindow, &activePID);

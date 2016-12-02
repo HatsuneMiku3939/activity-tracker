@@ -34,12 +34,12 @@ DWORD WINAPI ActionPerSecondMeter::ThreadFunc(PVOID pvParam) {
 
   int measure_counter = 0;
   int key_pressed = 0;
-  while(true) {
+  while (true) {
     memset(current_key_status, 0, 256);
 
     GetKeyState(0) ;
     if (GetKeyboardState(current_key_status)) {
-      for(int i = 0; i < 256; i++) {
+      for (int i = 0; i < 256; i++) {
         int key_down = current_key_status[i] >> 7;
         if (current_key_status[i] != previous_key_status[i] && key_down)
           key_pressed += 1;
