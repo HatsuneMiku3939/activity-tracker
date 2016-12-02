@@ -30,7 +30,7 @@ std::wstring getAcitveFilename(DWORD activePID) {
 
   pe32.dwSize = sizeof(PROCESSENTRY32W);
   if (!Process32FirstW(processSnap, &pe32)) {
-    CloseHandle (processSnap);
+    CloseHandle(processSnap);
     return std::wstring(L"NULL");
   }
 
@@ -40,8 +40,7 @@ std::wstring getAcitveFilename(DWORD activePID) {
       CloseHandle(processSnap);
       return escapeSpecialWord(activeFilename);
     }
-  }
-  while (Process32NextW(processSnap, &pe32));
+  } while (Process32NextW(processSnap, &pe32));
 
   CloseHandle(processSnap);
   return std::wstring(L"NULL");
