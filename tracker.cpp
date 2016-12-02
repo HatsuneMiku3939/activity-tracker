@@ -12,8 +12,8 @@
 
 #include "utils_win.h"
 #include "logger.h"
+#include "aps_meter.h"
 
-using namespace tracker::utils;
 using namespace tracker::logger;
 
 class ConslogOutput : public Output {
@@ -72,8 +72,10 @@ public:
   ActivityLog(std::wstring &stat,
     std::wstring &activeUsername,
     std::wstring &activeWindowText,
-    std::wstring &activeFilename) : status(stat), username(activeUsername),
-                                    windowText(activeWindowText), filename(activeFilename), Log(L"activity") {
+    std::wstring &activeFilename,
+    int actionPerSecond) : status(stat), username(activeUsername),
+                           windowText(activeWindowText), filename(activeFilename),
+                           aps(actionPerSecond), Log(L"activity") {
   }
 
   std::wstring to_json(void) {
@@ -81,8 +83,9 @@ public:
            + L" \"status\":\"" + status + L"\""
            + L",\"user\":\"" + username + L"\""
            + L",\"window_text\":\"" + windowText + L"\""
-           + L",\"filename\":\"" + filename
-           + L"\"}";
+           + L",\"filename\":\"" + filename + L"\""
+           + L",\"action_per_second\":" + std::to_wstring(aps)
+           + L" }";
   }
 
 private:
@@ -90,6 +93,7 @@ private:
   std::wstring username;
   std::wstring windowText;
   std::wstring filename;
+  int aps;
 };
 
 class InternalLog : public Log {
@@ -144,6 +148,9 @@ private:
 };
 
 int main(void) {
+  using namespace tracker::utils;
+  using namespace tracker::aps;
+
   Logger logger;
 
   FluentdUdpOutput fluentd_udp_output;
@@ -156,6 +163,10 @@ int main(void) {
 
   logger.send(InternalLog(L"INFO", L"starting activity-tracker"));
   counter_filter.set_max(60);
+
+  ActionPerSecondMeter aps;
+  aps.start();
+
   while(true) {
     HWND activeWindow = GetForegroundWindow();
     DWORD activePID;
@@ -165,8 +176,9 @@ int main(void) {
     std::wstring activeFilename = getAcitveFilename(activePID);
     std::wstring activeUsername = getActiveUsername();
     std::wstring status = isIdle() ? L"idle" : L"active";
+    int actionPerSecond = aps.getActionPerSecond();
 
-    logger.send(ActivityLog(status, activeUsername, activeWindowText, activeFilename));
+    logger.send(ActivityLog(status, activeUsername, activeWindowText, activeFilename, actionPerSecond));
     logger.send(InternalLog(L"INFO", L"activity-tracker is running..."));
 
     Sleep(1000);
