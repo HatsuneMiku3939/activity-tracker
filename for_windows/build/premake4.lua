@@ -8,11 +8,12 @@ solution "ActLogger"
       "../src/**.h",
       "../src/**.cpp",
       "../src/**.rc",
-      "../../**.h",
-      "../../**.cpp"
+      "../../src/**.h",
+      "../../src/**.cpp",
+      "../../src/logger/**.h"
     }
     excludes {
-      "../../tracker.cpp"
+      "../../src/tracker.cpp"
     }
 
   configuration "Debug"

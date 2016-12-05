@@ -11,9 +11,9 @@
 
 #include "resource.h"
 
-#include "../../utils_win.h"
-#include "../../logger.h"
-#include "../../aps_meter.h"
+#include "../../src/utils_win.h"
+#include "../../src/logger/logger.h"
+#include "../../src/aps_meter.h"
 
 #define MAX_LOADSTRING 255
 const unsigned int ID_LOGGER = 3939;

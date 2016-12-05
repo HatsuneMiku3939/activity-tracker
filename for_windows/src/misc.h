@@ -9,9 +9,9 @@
 #include <sstream>
 #include <list>
 
-#include "../../utils_win.h"
-#include "../../logger.h"
-#include "../../aps_meter.h"
+#include "../../src/utils_win.h"
+#include "../../src/logger/logger.h"
+#include "../../src/aps_meter.h"
 
 using namespace tracker::logger;
 
