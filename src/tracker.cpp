@@ -25,7 +25,7 @@ class ConslogOutput : public Output {
 // TODO, error logging
 class FluentdUdpOutput : public Output {
 public:
-  FluentdUdpOutput(): port(20039), host("FLUENTD_HOST_IP_IS_HERE") {
+  FluentdUdpOutput(std::string fluentd_host, int fluentd_port): port(fluentd_port), host(fluentd_host) {
     if (!initWinsock()) {
       throw std::runtime_error("FluentdUdpOutput: Winsock initialize error");
     }
@@ -147,13 +147,31 @@ private:
   int max_count;
 };
 
-int main(void) {
+void usage(void) {
+  std::cout <<
+    "activity-tracker\n"
+    "\n"
+    "An agent of personal activity monitoring system for Windows desktop.\n"
+    "\n"
+    "USAGE: tracker.exe FLUENTD_HOST_IP FLUENTD_UDP_PORT\n"
+    "       tracker.exe 192.168.11.5 20039\n"
+    << std::endl;
+}
+
+int main(int argc, char **argv) {
   using namespace tracker::utils;
   using namespace tracker::aps;
 
-  Logger logger;
+  if (argc != 3) {
+    usage();
+    return 0;
+  }
 
-  FluentdUdpOutput fluentd_udp_output;
+  std::string fluentd_host = argv[1];
+  int fluentd_port = std::stoi(argv[2]);
+
+  Logger logger;
+  FluentdUdpOutput fluentd_udp_output(fluentd_host, fluentd_port);
   logger.route(L"activity", &fluentd_udp_output);
 
   ConslogOutput consolg_output;
