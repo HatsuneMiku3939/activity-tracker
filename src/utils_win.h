@@ -8,9 +8,9 @@ namespace tracker {
 namespace utils {
 
 bool isIdle(void);
-std::wstring getAcitveFilename(DWORD activePID);
-std::wstring getActiveWindowText(HWND activeHWND);
-std::wstring getActiveUsername(void);
+std::string getAcitveFilename(DWORD activePID);
+std::string getActiveWindowText(HWND activeHWND);
+std::string getActiveUsername(void);
 
 } // ns utils
 } // ns tracker

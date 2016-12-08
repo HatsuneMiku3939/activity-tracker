@@ -9,14 +9,14 @@ namespace logger {
 
 class Log {
 public:
-  Log(std::wstring tag);
+  Log(std::string tag);
   virtual ~Log();
 
-  virtual std::wstring to_json(void) = 0;
-  std::wstring getTag(void);
+  virtual std::string to_json(void) = 0;
+  std::string getTag(void);
 
 protected:
-  std::wstring tag;
+  std::string tag;
 };
 
 class Filter {
@@ -27,7 +27,7 @@ public:
 // TODO: use smart pointer
 class Output {
 public:
-  virtual void emit(const std::wstring log_json) = 0;
+  virtual void emit(const std::string log_json) = 0;
 
 public:
   void receive(Log *log);
@@ -44,10 +44,10 @@ public:
   void send(Log &log);
 
 public:
-  void route(std::wstring tag, Output *output);
+  void route(std::string tag, Output *output);
 
 private:
-  std::vector<std::pair<std::wstring, Output *>> routes;
+  std::vector<std::pair<std::string, Output *>> routes;
 };
 
 } // ns logger

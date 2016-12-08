@@ -1,4 +1,6 @@
 #include "utils.h"
+#include <codecvt>
+#include <locale>
 
 namespace tracker {
 namespace utils {
@@ -17,6 +19,11 @@ std::wstring escapeSpecialWord(std::wstring str) {
   str = replaceAll(str, L"\"", L"\\\"");
 
   return str;
+}
+
+std::string utf8_conv(std::wstring str) {
+  std::wstring_convert<std::codecvt_utf8<wchar_t>> utf8_conv;
+  return utf8_conv.to_bytes(str);
 }
 
 } // ns utils

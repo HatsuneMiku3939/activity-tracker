@@ -3,14 +3,14 @@
 namespace tracker {
 namespace logger {
 
-Log::Log(std::wstring tag) {
+Log::Log(std::string tag) {
   this->tag = tag;
 }
 
 Log::~Log() {
 }
 
-std::wstring Log::getTag(void) {
+std::string Log::getTag(void) {
   return tag;
 }
 
@@ -36,13 +36,13 @@ Logger::Logger() {
 Logger::~Logger() {
 }
 
-void Logger::route(std::wstring tag, Output *output) {
+void Logger::route(std::string tag, Output *output) {
   routes.push_back(make_pair(tag, output));
 }
 
 void Logger::send(Log &log) {
   for (auto route = routes.begin(); route != routes.end(); route++) {
-    std::wstring tag = (*route).first;
+    std::string tag = (*route).first;
     Output *output = (*route).second;
 
     if (tag == log.getTag()) {
