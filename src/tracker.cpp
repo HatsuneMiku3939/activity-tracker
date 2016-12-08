@@ -66,43 +66,26 @@ private:
 
 class ActivityLog : public Log {
 public:
-  ActivityLog(std::string &stat,
-              std::string &activeUsername,
-              std::string &activeWindowText,
-              std::string &activeFilename,
-              int actionPerSecond) : status(stat), username(activeUsername),
-    windowText(activeWindowText), filename(activeFilename),
-    aps(actionPerSecond), Log("activity") {
-  }
+  ActivityLog(std::string &status,
+              std::string &username,
+              std::string &windowText,
+              std::string &filename,
+              int aps) : Log("activity") {
 
-  std::string to_json(void) {
-    return std::string("{")
-           + " \"status\":\"" + status + "\""
-           + ",\"user\":\"" + username + "\""
-           + ",\"window_text\":\"" + windowText + "\""
-           + ",\"filename\":\"" + filename + "\""
-           + ",\"action_per_second\":" + std::to_string(aps)
-           + " }";
+    add_property<std::string>("status", status);
+    add_property<std::string>("user", username);
+    add_property<std::string>("window_text", windowText);
+    add_property<std::string>("filename", filename);
+    add_property<int>("action_per_second", aps);
   }
-
-private:
-  std::string status;
-  std::string username;
-  std::string windowText;
-  std::string filename;
-  int aps;
 };
 
 class InternalLog : public Log {
 public:
-  InternalLog(std::string lev, std::string msg): Log("log"), level(lev), message(msg) { }
-
-  std::string to_json(void) {
-    return std::string("{")
-           + " \"timestamp\":\"" + current_time_and_date() + "\""
-           + ",\"level\":\"" + level + "\""
-           + ",\"message\":\"" + message
-           + "\"}";
+  InternalLog(std::string level, std::string message): Log("log") {
+    add_property<std::string>("timestamp", current_time_and_date());
+    add_property<std::string>("level", level);
+    add_property<std::string>("message", message);
   }
 
 private:
@@ -114,9 +97,6 @@ private:
 
     return ss.str();
   }
-
-  std::string level;
-  std::string message;
 };
 
 class CounterFilter : public Filter {
