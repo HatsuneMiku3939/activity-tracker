@@ -3,15 +3,33 @@
 namespace tracker {
 namespace logger {
 
-Log::Log(std::wstring tag) {
-  this->tag = tag;
+Log::Log(std::string tag) {
+  root["tag"] = tag;
 }
 
 Log::~Log() {
 }
 
-std::wstring Log::getTag(void) {
-  return tag;
+std::string Log::getTag(void) {
+  return root["tag"].asString();
+}
+
+std::string replaceAll(std::string str, const std::string &from, const std::string &to) {
+  size_t start_pos = 0;
+  while ((start_pos = str.find(from, start_pos)) != std::string::npos) {
+    str.replace(start_pos, from.length(), to);
+    start_pos += to.length();
+  }
+  return str;
+}
+
+std::string Log::to_json(void) {
+  Json::StreamWriterBuilder builder;
+  builder["commentStyle"] = "None";
+  builder["indentation"] = "";
+  std::string json = Json::writeString(builder, root);
+
+  return replaceAll(json, "\n", " ");
 }
 
 Output &Output::withFilter(Filter *filter) {
@@ -36,13 +54,13 @@ Logger::Logger() {
 Logger::~Logger() {
 }
 
-void Logger::route(std::wstring tag, Output *output) {
+void Logger::route(std::string tag, Output *output) {
   routes.push_back(make_pair(tag, output));
 }
 
 void Logger::send(Log &log) {
   for (auto route = routes.begin(); route != routes.end(); route++) {
-    std::wstring tag = (*route).first;
+    std::string tag = (*route).first;
     Output *output = (*route).second;
 
     if (tag == log.getTag()) {

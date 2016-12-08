@@ -1,7 +1,5 @@
 #include <string>
 #include <iostream>
-#include <codecvt>
-#include <locale>
 #include <stdexcept>
 #include <iomanip>
 #include <ctime>
@@ -17,8 +15,8 @@
 using namespace tracker::logger;
 
 class ConslogOutput : public Output {
-  void emit(std::wstring log_json) {
-    std::wcout << log_json << std::endl;
+  void emit(std::string log_json) {
+    std::cout << log_json << std::endl;
   }
 };
 
@@ -31,9 +29,8 @@ public:
     }
   }
 
-  void emit(std::wstring log_json) {
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> utf8_conv;
-    send(utf8_conv.to_bytes(log_json + L"\n"));
+  void emit(std::string log_json) {
+    send(log_json + "\n");
   }
 
 private:
@@ -69,57 +66,37 @@ private:
 
 class ActivityLog : public Log {
 public:
-  ActivityLog(std::wstring &stat,
-              std::wstring &activeUsername,
-              std::wstring &activeWindowText,
-              std::wstring &activeFilename,
-              int actionPerSecond) : status(stat), username(activeUsername),
-    windowText(activeWindowText), filename(activeFilename),
-    aps(actionPerSecond), Log(L"activity") {
-  }
+  ActivityLog(std::string &status,
+              std::string &username,
+              std::string &windowText,
+              std::string &filename,
+              int aps) : Log("activity") {
 
-  std::wstring to_json(void) {
-    return std::wstring(L"{")
-           + L" \"status\":\"" + status + L"\""
-           + L",\"user\":\"" + username + L"\""
-           + L",\"window_text\":\"" + windowText + L"\""
-           + L",\"filename\":\"" + filename + L"\""
-           + L",\"action_per_second\":" + std::to_wstring(aps)
-           + L" }";
+    add_property<std::string>("status", status);
+    add_property<std::string>("user", username);
+    add_property<std::string>("window_text", windowText);
+    add_property<std::string>("filename", filename);
+    add_property<int>("action_per_second", aps);
   }
-
-private:
-  std::wstring status;
-  std::wstring username;
-  std::wstring windowText;
-  std::wstring filename;
-  int aps;
 };
 
 class InternalLog : public Log {
 public:
-  InternalLog(std::wstring lev, std::wstring msg): Log(L"log"), level(lev), message(msg) { }
-
-  std::wstring to_json(void) {
-    return std::wstring(L"{")
-           + L" \"timestamp\":\"" + current_time_and_date() + L"\""
-           + L",\"level\":\"" + level + L"\""
-           + L",\"message\":\"" + message
-           + L"\"}";
+  InternalLog(std::string level, std::string message): Log("log") {
+    add_property<std::string>("timestamp", current_time_and_date());
+    add_property<std::string>("level", level);
+    add_property<std::string>("message", message);
   }
 
 private:
-  std::wstring current_time_and_date() {
-    std::wstringstream ss;
+  std::string current_time_and_date() {
+    std::stringstream ss;
 
     std::time_t t = std::time(NULL);
-    ss << std::put_time(std::localtime(&t), L"%c");
+    ss << std::put_time(std::localtime(&t), "%c");
 
     return ss.str();
   }
-
-  std::wstring level;
-  std::wstring message;
 };
 
 class CounterFilter : public Filter {
@@ -172,14 +149,14 @@ int main(int argc, char **argv) {
 
   Logger logger;
   FluentdUdpOutput fluentd_udp_output(fluentd_host, fluentd_port);
-  logger.route(L"activity", &fluentd_udp_output);
+  logger.route("activity", &fluentd_udp_output);
 
   ConslogOutput consolg_output;
   CounterFilter counter_filter(0);
   consolg_output.withFilter(&counter_filter);
-  logger.route(L"log", &consolg_output);
+  logger.route("log", &consolg_output);
 
-  logger.send(InternalLog(L"INFO", L"starting activity-tracker"));
+  logger.send(InternalLog("INFO", "starting activity-tracker"));
   counter_filter.set_max(60);
 
   ActionPerSecondMeter aps;
@@ -190,14 +167,14 @@ int main(int argc, char **argv) {
     DWORD activePID;
     GetWindowThreadProcessId(activeWindow, &activePID);
 
-    std::wstring activeWindowText = getActiveWindowText(activeWindow);
-    std::wstring activeFilename = getAcitveFilename(activePID);
-    std::wstring activeUsername = getActiveUsername();
-    std::wstring status = isIdle() ? L"idle" : L"active";
+    std::string activeWindowText = getActiveWindowText(activeWindow);
+    std::string activeFilename = getAcitveFilename(activePID);
+    std::string activeUsername = getActiveUsername();
+    std::string status = isIdle() ? "idle" : "active";
     int actionPerSecond = aps.getActionPerSecond();
 
     logger.send(ActivityLog(status, activeUsername, activeWindowText, activeFilename, actionPerSecond));
-    logger.send(InternalLog(L"INFO", L"activity-tracker is running..."));
+    logger.send(InternalLog("INFO", "activity-tracker is running..."));
 
     Sleep(1000);
   }
