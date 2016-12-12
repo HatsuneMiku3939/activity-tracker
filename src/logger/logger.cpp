@@ -24,10 +24,13 @@ std::string replaceAll(std::string str, const std::string &from, const std::stri
 }
 
 std::string Log::to_json(void) {
+  Json::Value tag_removed = root;
+  tag_removed.removeMember("tag");
+
   Json::StreamWriterBuilder builder;
   builder["commentStyle"] = "None";
   builder["indentation"] = "";
-  std::string json = Json::writeString(builder, root);
+  std::string json = Json::writeString(builder, tag_removed);
 
   return replaceAll(json, "\n", " ");
 }
