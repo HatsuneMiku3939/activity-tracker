@@ -126,13 +126,13 @@ private:
 
 void usage(void) {
   std::cout <<
-    "activity-tracker\n"
-    "\n"
-    "An agent of personal activity monitoring system for Windows desktop.\n"
-    "\n"
-    "USAGE: tracker.exe FLUENTD_HOST_IP FLUENTD_UDP_PORT\n"
-    "       tracker.exe 192.168.11.5 20039\n"
-    << std::endl;
+            "activity-tracker\n"
+            "\n"
+            "An agent of personal activity monitoring system for Windows desktop.\n"
+            "\n"
+            "USAGE: tracker.exe FLUENTD_HOST_IP FLUENTD_UDP_PORT\n"
+            "       tracker.exe 192.168.11.5 20039\n"
+            << std::endl;
 }
 
 int main(int argc, char **argv) {
