@@ -130,8 +130,8 @@ void usage(void) {
             "\n"
             "An agent of personal activity monitoring system for Windows desktop.\n"
             "\n"
-            "USAGE: tracker.exe FLUENTD_HOST_IP FLUENTD_UDP_PORT\n"
-            "       tracker.exe 192.168.11.5 20039\n"
+            "USAGE: activity-tracker.exe FLUENTD_HOST_IP FLUENTD_UDP_PORT\n"
+            "       activity-tracker.exe 192.168.11.5 20039\n"
             << std::endl;
 }
 
