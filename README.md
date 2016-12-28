@@ -1,7 +1,7 @@
 # activity-tracker
 > An agent of personal activity monitoring system for Windows desktop.
 
-`activity-tracker`는 포어 그라운드 윈도우상의 활동을 모니터링하여 `Fluentd` 서버로 전송, `Elasticsearch`, `InfluxDB`등의 스토리지에 저장하고 가시화하는 시스템의 에이전트 프로그램입니다. `activity-tracker`가 수집하는 정보는 다음과 같습니다.
+`activity-tracker`는 포어 그라운드 윈도우상의 활동을 모니터링하여 `Fluentd` 서버로 전송, `Elasticsearch`등의 스토리지에 저장하고 가시화하는 시스템의 에이전트 프로그램입니다. `activity-tracker`가 수집하는 정보는 다음과 같습니다.
 
 * filename: 포어 그라운드 윈도우의 파일명 ex) Diablo III.exe
 * window_text: 포어 그라운드 윈도우의 타이틀 ex) 디아블로 III
@@ -17,7 +17,7 @@
 
 ## 사용예
 
-다음과 같이 `fluentd`의 호스트IP와  UDP 소스의 포트 번호를 지정하여 실행합니다. 전송된 활동 로그를 `Elasticsearch`, `InfluxDB`등의 스토리지에 저장하는 설정에 관해선 `fluentd`의 문서등을 참고해주십시오.
+다음과 같이 `fluentd`의 호스트IP와  UDP 소스의 포트 번호를 지정하여 실행합니다. 전송된 활동 로그를 `Elasticsearch`등의 스토리지에 저장하는 설정에 관해선 `fluentd`의 문서등을 참고해주십시오.
 
 ```sh
 activity-tracker.exe 192.168.11.5 20039
