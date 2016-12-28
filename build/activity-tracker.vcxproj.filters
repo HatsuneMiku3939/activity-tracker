@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="libs">
+      <UniqueIdentifier>{2F149A7C-1B4B-9B0D-C437-8110B04D170F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libs\jsoncpp-1.7.7">
+      <UniqueIdentifier>{230DEFDE-0FF1-AF34-7851-AA8764549AB6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libs\jsoncpp-1.7.7\json">
+      <UniqueIdentifier>{CC529234-388A-DACB-4194-3EEFAD4A01C5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\logger">
+      <UniqueIdentifier>{7CE03D69-6898-7FB6-D19F-5812BD761AA7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\libs\jsoncpp-1.7.7\json\json-forwards.h">
+      <Filter>libs\jsoncpp-1.7.7\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\jsoncpp-1.7.7\json\json.h">
+      <Filter>libs\jsoncpp-1.7.7\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\aps_meter.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\logger\logger.h">
+      <Filter>src\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\utils.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\utils_win.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\libs\jsoncpp-1.7.7\jsoncpp.cpp">
+      <Filter>libs\jsoncpp-1.7.7</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\aps_meter.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\logger\logger.cpp">
+      <Filter>src\logger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\logger\test.cpp">
+      <Filter>src\logger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tracker.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\utils.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\utils_win.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

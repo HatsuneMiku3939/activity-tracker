@@ -1,2 +1,9 @@
 *.obj
 *.exe
+**/gg.*
+
+build/obj/*
+build/Debug32/*
+build/Debug64/*
+build/Release32/*
+build/Release32/*
