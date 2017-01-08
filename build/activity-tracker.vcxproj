@@ -195,7 +195,6 @@
     <ClCompile Include="..\libs\jsoncpp-1.7.7\jsoncpp.cpp" />
     <ClCompile Include="..\src\aps_meter.cpp" />
     <ClCompile Include="..\src\logger\logger.cpp" />
-    <ClCompile Include="..\src\logger\test.cpp" />
     <ClCompile Include="..\src\tracker.cpp" />
     <ClCompile Include="..\src\utils.cpp" />
     <ClCompile Include="..\src\utils_win.cpp" />
