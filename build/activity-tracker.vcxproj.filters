@@ -47,9 +47,6 @@
     <ClCompile Include="..\src\logger\logger.cpp">
       <Filter>src\logger</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\logger\test.cpp">
-      <Filter>src\logger</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\tracker.cpp">
       <Filter>src</Filter>
     </ClCompile>
