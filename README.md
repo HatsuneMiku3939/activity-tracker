@@ -17,7 +17,7 @@
 
 ## 사용예
 
-다음과 같이 `fluentd`의 호스트IP와  UDP 소스의 포트 번호를 지정하여 실행합니다. 전송된 활동 로그를 `Elasticsearch`등의 스토리지에 저장하는 설정에 관해선 `fluentd`의 문서등을 참고해주십시오.
+다음과 같이 `fluentd`의 호스트IP와 UDP 소스의 포트 번호를 지정하여 실행합니다. 전송된 활동 로그를 `Elasticsearch`등의 스토리지에 저장하는 설정에 관해선 `fluentd`의 문서등을 참고해주십시오.
 
 ```sh
 activity-tracker.exe 192.168.11.5 20039
@@ -32,10 +32,19 @@ activity-tracker.exe 192.168.11.5 20039
 
 자유롭게 풀 리퀘스트를 생성해주십시오.
 
+### 솔루션 파일을 생성하는 방법
+
+`src` 디렉토리에 파일을 추가하셨다면 솔루션 파일을 재생성할 필요가 있습니다. `build` 디렉토리의 솔루션 파일은 `Premake5`를 사용해 생성되었습니다. premake5 [https://premake.github.io/download.html](https://premake.github.io/download.html)을 내려받으신 후 `build` 디렉토리에서 다음 명령을 실행하시면 솔루션 파일을 재생성할 수 있습니다. 솔루션 파일의 재생성하면 `src` 디렉토리에 추가, 작제된 `cpp` 파일과 `h` 파일을 인식하여 솔루션 파일이 생성됩니다.
+
+```sh
+premake5 vs2013
+```
+
 ## 외부 라이브러리
-`activity-tracker`는 다음의 라이브러리들을 사용하고 있습니다. 훌륭한 라이브러리를 만들어준 개발자들에게 감사드립니다.
+`activity-tracker`는 다음의 라이브러리와 툴들을 사용하고 있습니다. 훌륭한 라이브러리 및 툴을 만들어준 개발자들에게 감사드립니다.
 
 * [jsoncpp](https://github.com/open-source-parsers/jsoncpp)
+* [premake](https://premake.github.io/)
 
 ## 라이센스
 MIT License
