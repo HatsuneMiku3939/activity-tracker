@@ -32,7 +32,7 @@ std::string Log::to_json(void) {
   builder["indentation"] = "";
   std::string json = Json::writeString(builder, tag_removed);
 
-  return replaceAll(json, "\n", " ");
+  return json;
 }
 
 Output &Output::withFilter(Filter *filter) {
