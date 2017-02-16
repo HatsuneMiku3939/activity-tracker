@@ -67,12 +67,14 @@ private:
 class ActivityLog : public Log {
 public:
   ActivityLog(std::string &status,
+              std::string &session_id,
               std::string &username,
               std::string &windowText,
               std::string &filename,
               int aps) : Log("activity") {
 
     add_property<std::string>("status", status);
+    add_property<std::string>("session_id", session_id);
     add_property<std::string>("user", username);
     add_property<std::string>("window_text", windowText);
     add_property<std::string>("filename", filename);
@@ -159,21 +161,47 @@ int main(int argc, char **argv) {
   logger.send(InternalLog("INFO", "starting activity-tracker"));
   counter_filter.set_max(60);
 
+#ifdef DEBUG
+  logger.route("activity", &consolg_output);
+  counter_filter.set_max(0);
+#endif
+
   ActionPerSecondMeter aps;
   aps.start();
+
+  std::string activeWindowText;
+  std::string activeFilename;
+  std::string activeUsername;
+  std::string status;
+  int actionPerSecond;
+  std::string session_id;
+
+  // pre-assign status for detect status change
+  status = isIdle() ? "idle" : "active";
+
+  // generate initial sesison id
+  session_id = getUUID();
 
   while (true) {
     HWND activeWindow = GetForegroundWindow();
     DWORD activePID;
     GetWindowThreadProcessId(activeWindow, &activePID);
 
-    std::string activeWindowText = getActiveWindowText(activeWindow);
-    std::string activeFilename = getAcitveFilename(activePID);
-    std::string activeUsername = getActiveUsername();
-    std::string status = isIdle() ? "idle" : "active";
-    int actionPerSecond = aps.getActionPerSecond();
+    activeWindowText = getActiveWindowText(activeWindow);
+    activeFilename = getAcitveFilename(activePID);
+    activeUsername = getActiveUsername();
+    std::string current_status = isIdle() ? "idle" : "active";
+    actionPerSecond = aps.getActionPerSecond();
 
-    logger.send(ActivityLog(status, activeUsername, activeWindowText, activeFilename, actionPerSecond));
+    // if status change from idle to active
+    if (status == "idle" && current_status == "active") {
+      // generate a new sesison id
+      session_id = getUUID();
+    }
+    status = current_status;
+
+    logger.send(ActivityLog(status, session_id,
+                            activeUsername, activeWindowText, activeFilename, actionPerSecond));
     logger.send(InternalLog("INFO", "activity-tracker is running..."));
 
     Sleep(1000);

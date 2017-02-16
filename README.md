@@ -9,6 +9,9 @@
 * status: 현재 상태
   * 30초 이상 키보드나 마우스 입력이 없을 경우 idle
   * 이외의 경우는 active
+* session_id: 지속적으로 status가 active 상태임을 알리 위한 session_id
+  * idle 상태에서 active로 변환될 때 새로운 session_id가 발행됨
+  * Windows의 session id와는 별개임
 * user: 현재 로그인 상태의 윈도우즈 계정
 
 ## 컴파일 방법
