@@ -3,6 +3,7 @@
 
 #include <windows.h>
 #include <tlhelp32.h>
+#include <Rpc.h>
 
 namespace tracker {
 namespace utils {
@@ -64,6 +65,23 @@ std::string getActiveUsername(void) {
   }
 
   return std::string("NULL");
+}
+
+std::string getUUID(void) {
+  UUID uuid;
+  std::string uuid_string;
+
+  if (UuidCreate(&uuid) == RPC_S_OK) {
+    wchar_t *uuid_buffer;
+    UuidToStringW(&uuid, (RPC_WSTR *)(&uuid_buffer));
+
+    uuid_string = utf8_conv(uuid_buffer);
+    RpcStringFreeW((RPC_WSTR *)(&uuid_buffer));
+  } else {
+    uuid_string = std::string("NULL");
+  }
+
+  return uuid_string;
 }
 
 } // ns utils

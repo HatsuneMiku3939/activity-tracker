@@ -29,7 +29,7 @@ solution "activity-tracker"
       "../src/logger",
       "../libs/jsoncpp-1.7.7",
     }
-    links { "User32", "Ws2_32", "Advapi32" }
+    links { "User32", "Ws2_32", "Advapi32", "Rpcrt4" }
 
   configuration "Debug32"
     defines { "DEBUG" }

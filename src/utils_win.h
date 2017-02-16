@@ -11,6 +11,7 @@ bool isIdle(void);
 std::string getAcitveFilename(DWORD activePID);
 std::string getActiveWindowText(HWND activeHWND);
 std::string getActiveUsername(void);
+std::string getUUID(void);
 
 } // ns utils
 } // ns tracker
