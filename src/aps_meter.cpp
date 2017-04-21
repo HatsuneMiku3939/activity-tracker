@@ -35,6 +35,7 @@ DWORD WINAPI ActionPerSecondMeter::ThreadFunc(PVOID pvParam) {
   int measure_counter = 0;
   int key_pressed = 0;
   while (true) {
+    DWORD tick = GetTickCount();
     memset(current_key_status, 0, 256);
 
     GetKeyState(0) ;
@@ -53,7 +54,9 @@ DWORD WINAPI ActionPerSecondMeter::ThreadFunc(PVOID pvParam) {
       measure_counter = 0;
       key_pressed = 0;
     }
-    Sleep(20);
+
+    // wait 20ms per loop
+    Sleep(20 - (GetTickCount() - tick));
     measure_counter += 1;
   }
 

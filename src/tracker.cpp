@@ -183,6 +183,8 @@ int main(int argc, char **argv) {
   session_id = getUUID();
 
   while (true) {
+    DWORD tick = GetTickCount();
+
     HWND activeWindow = GetForegroundWindow();
     DWORD activePID;
     GetWindowThreadProcessId(activeWindow, &activePID);
@@ -204,7 +206,8 @@ int main(int argc, char **argv) {
                             activeUsername, activeWindowText, activeFilename, actionPerSecond));
     logger.send(InternalLog("INFO", "activity-tracker is running..."));
 
-    Sleep(1000);
+    // wait 1000ms per loop
+    Sleep(1000 - (GetTickCount() - tick));
   }
 }
 
