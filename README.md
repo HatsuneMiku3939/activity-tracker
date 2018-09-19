@@ -30,6 +30,7 @@ activity-tracker.exe 192.168.11.5 20039
 
 
 ![dashboard-example](images/dashboard.png)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FHatsuneMiku3939%2Factivity-tracker.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FHatsuneMiku3939%2Factivity-tracker?ref=badge_shield)
 
 ## 풀 리퀘스트
 
@@ -51,3 +52,7 @@ premake5 vs2013
 
 ## 라이센스
 MIT License
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FHatsuneMiku3939%2Factivity-tracker.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FHatsuneMiku3939%2Factivity-tracker?ref=badge_large)
